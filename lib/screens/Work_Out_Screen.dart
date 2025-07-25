@@ -21,6 +21,18 @@ class WorkOutScreen extends StatelessWidget {
             },
             color: Colors.white,
           ),
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: 'Navigation Menu',
+                color: Colors.white,
+              ),
+            ),
+          ],
           title: Text(
             "Fitness Tracker Pro",
             style: Theme.of(context).primaryTextTheme.titleLarge?.copyWith(
@@ -32,6 +44,30 @@ class WorkOutScreen extends StatelessWidget {
           ),
           backgroundColor: Colors.black,
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                height: 100,
+                decoration: BoxDecoration(color: Colors.black),
+                child: Center(
+                  child: Text(
+                    'Fitness Menu',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.fitness_center),
+                title: const Text('Progress'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
         body: WorkOutList(),
       ),
     );
@@ -39,6 +75,8 @@ class WorkOutScreen extends StatelessWidget {
 }
 
 class WorkOutList extends StatefulWidget {
+  const WorkOutList({super.key});
+
   @override
   _WorkOutListState createState() => _WorkOutListState();
 }
@@ -91,7 +129,7 @@ class WorkoutCard extends StatelessWidget {
             ),
           ),
 
-          Container(
+          SizedBox(
             height: 200,
             child: Lottie.asset(
               workout.animationAsset,

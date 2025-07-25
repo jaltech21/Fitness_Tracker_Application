@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'Work_Out_Screen.dart';
 import 'dart:async';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:intl/intl.dart';
+import 'WorkoutStorage.dart';
+import 'Progress_Screen.dart';
 
 class CountdownScreen extends StatefulWidget {
   final WorkoutItem workout;
@@ -30,10 +34,18 @@ class _CountdownScreenState extends State<CountdownScreen> {
         } else {
           _timer.cancel();
           _isRunning = false;
+          _saveWorkoutCompletion();
         }
       });
     });
     _isRunning = true;
+  }
+
+  Future<void> _saveWorkoutCompletion() async {
+    await WorkoutStorage.saveCompletedWorkout(
+      widget.workout.name,
+      widget.workout.duration,
+    );
   }
 
   void _pauseTimer() {
@@ -80,6 +92,48 @@ class _CountdownScreenState extends State<CountdownScreen> {
             Navigator.pop(context);
           },
           color: Colors.white,
+        ),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: 'Navigation Menu',
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            Container(
+              height: 100,
+              decoration: BoxDecoration(color: Colors.black),
+              child: Center(
+                child: Text(
+                  'Fitness Menu',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.fitness_center),
+              title: const Text('Progress'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProgressScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       body: Column(

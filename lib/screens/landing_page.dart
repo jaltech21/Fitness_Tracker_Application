@@ -24,11 +24,15 @@ class FitnessLandingPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu),
-            tooltip: 'Navigation Menu',
-            color: Colors.white,
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: 'Navigation Menu',
+              color: Colors.white,
+            ),
           ),
           actions: [
             IconButton(
@@ -37,6 +41,30 @@ class FitnessLandingPage extends StatelessWidget {
               color: Colors.white,
             ),
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                height: 100,
+                decoration: BoxDecoration(color: Colors.black),
+                child: Center(
+                  child: Text(
+                    'Fitness Menu',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.fitness_center),
+                title: const Text('Progress'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
